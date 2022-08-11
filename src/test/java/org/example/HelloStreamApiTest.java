@@ -245,27 +245,4 @@ class HelloStreamApiTest {
 
         System.out.println(oddNums);
     }
-
-//    @Test
-//    public void streamConcat() {
-//        // get by Aggregations Metric & get by Aggregations type, Then join with aggregationSqlFunctions
-//        List<SqlColumn> aggregationSqlFunctions = Stream.concat(
-//                        sqlUtil.getAggregationFunctions(request.getAggregations(), request).stream(),
-//                        sqlUtil.getAggregationFunctionsByType(request.getAggregations(), request).stream())
-//                .filter(x -> StringUtils.isNotEmpty(x.getName())).collect(Collectors.toList());
-//    }
-//
-//    @Test
-//    public void multiTransform() {
-//        return selectColumnsStream
-//                .filter(x -> StringUtils.isNotEmpty(x.getName()))
-//                .map(locationUtil::tryReplaceGeoQuery)
-//                .map(sqlUtil::replaceColumnNameIfIsInAliasMap)
-//                .map(x -> sqlUtil.replaceLinksColumnWithAlias(x, request))
-//                .map(s -> formatUtil.formatDateColumn(s, table, Constants.SQL_DATE_PATTERN))
-//                .map(x -> sqlUtil.tryPrefixAmbiguousColumn(x, table))
-//                .map(x -> sqlUtil.tryPrefixArrayType(x, table))
-//                .map(x -> sqlUtil.replaceColumnNullValue(x, table, true, false))
-//                .distinct().collect(Collectors.toList());
-//    }
 }
