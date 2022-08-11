@@ -1,7 +1,5 @@
 package org.example.model;
 
-import java.util.Collection;
-
 public class Person {
     private int age;
     private String lastName;
@@ -27,5 +25,23 @@ public class Person {
                 "age=" + age +
                 ", lastName='" + lastName + '\'' +
                 '}';
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Person person = (Person) o;
+
+        if (age != person.age) return false;
+        return lastName != null ? lastName.equals(person.lastName) : person.lastName == null;
+    }
+
+    @Override
+    public int hashCode() {
+        int result = age;
+        result = 31 * result + (lastName != null ? lastName.hashCode() : 0);
+        return result;
     }
 }

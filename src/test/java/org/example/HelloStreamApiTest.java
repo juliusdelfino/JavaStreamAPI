@@ -31,7 +31,7 @@ class HelloStreamApiTest {
 
         //begin sample code
         groupOfPeople.stream().filter(p -> p.getAge() <= 30)
-                .sorted((o1, o2) -> o1.getLastName().compareTo(o2.getLastName()))
+                .sorted(Comparator.comparing(Person::getLastName))
                 .forEach(p -> System.out.println(p.getLastName() + ", " + p.getAge()));
     }
 
@@ -48,29 +48,33 @@ class HelloStreamApiTest {
 
     @Test
     public void streamInfinite() {
-        Stream.generate(Math::random).limit(5).forEach(p -> {
+        Stream.generate(Math::random).forEach(p -> {
             System.out.println(p);
-            testUtil.unchecked(() -> Thread.sleep(1000));
+            try {
+                Thread.sleep(1000);
+            } catch (InterruptedException e) {
+                throw new RuntimeException(e);
+            }
         });
 
         Stream.iterate(10, i -> i * 2).limit(5).forEach(p -> {
             System.out.println(p);
-            testUtil.unchecked(() -> Thread.sleep(1000));
+            try {
+                Thread.sleep(1000);
+            } catch (InterruptedException e) {
+                throw new RuntimeException(e);
+            }
         });
     }
 
     @Test
     public void whenApplySummaryStatistics_thenGetBasicStats() {
-        List<Employee> empList = new ArrayList<>();
+        List<Employee> empList = testUtil.generateEmployeeList();
         DoubleSummaryStatistics stats = empList.stream()
                 .mapToDouble(Employee::getSalary)
                 .summaryStatistics();
 
-        assertEquals(stats.getCount(), 3);
-        assertEquals(stats.getSum(), 600000.0, 0);
-        assertEquals(stats.getMin(), 100000.0, 0);
-        assertEquals(stats.getMax(), 300000.0, 0);
-        assertEquals(stats.getAverage(), 200000.0, 0);
+        System.out.println(stats);
     }
 
     @Test
@@ -190,8 +194,8 @@ class HelloStreamApiTest {
     @Test
     public void testCollectors_groupingBy() {
         List<Employee> employeeList = testUtil.generateEmployeeList();
-        Map<String, List<Employee>> map = employeeList.stream()
-                .collect(Collectors.groupingBy(Employee::getTitle));
+        Map<String, List<Double>> map = employeeList.stream()
+                .collect(Collectors.groupingBy(Employee::getTitle, Collectors.mapping(Employee::getSalary, toList())));
         System.out.println(map);
     }
 
@@ -216,10 +220,14 @@ class HelloStreamApiTest {
 
     @Test
     public void parallelStream() {
-        // System.setProperty("java.util.concurrent.ForkJoinPool.common.parallelism", "5");
+        System.setProperty("java.util.concurrent.ForkJoinPool.common.parallelism", "1");
         Stream.generate(Math::random).parallel().forEach(p -> {
             System.out.println(Thread.currentThread().getName() + ": " + p);
-            testUtil.unchecked(() -> Thread.sleep(1000));
+            try {
+                Thread.currentThread().sleep(1000);
+            } catch (InterruptedException e) {
+                throw new RuntimeException(e);
+            }
         });
     }
 
