@@ -13,6 +13,7 @@ import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
+import static java.util.stream.Collectors.toList;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.mock;
@@ -42,7 +43,7 @@ class HelloStreamApiTest {
         Stream books = testUtil.generateStreamOfBooks();
 
         Stream s1 = Stream.builder().add(3).add(5).add(6).build();
-        System.out.println(s1.collect(Collectors.toList()));
+        System.out.println(s1.collect(toList()));
     }
 
     @Test
@@ -85,7 +86,7 @@ class HelloStreamApiTest {
         System.out.println("Setup filtering by last name done");
         Stream<String> s3 = s2.map(p -> p.getLastName().toUpperCase());
         System.out.println("Setup converting last name to uppercase done");
-        List<String> names = s3.collect(Collectors.toList());
+        List<String> names = s3.collect(toList());
         System.out.println(names);
     }
 
@@ -100,7 +101,7 @@ class HelloStreamApiTest {
                 .filter(p -> p.getLastName().contains("e"))
                 .map(p -> p.getLastName().toUpperCase())
                 .limit(1);
-        List<String> names = s1.collect(Collectors.toList());
+        List<String> names = s1.collect(toList());
         System.out.println(names);
     }
 
@@ -157,15 +158,14 @@ class HelloStreamApiTest {
         Stream<Book> books = testUtil.generateStreamOfBooks();
 
         //begin sample code
-        System.out.println(books
-                        .map(Book::getName)
-                        .reduce("START", (a, b) -> a + ", " + b));
+        System.out.println(books.map(Book::getName)
+            .reduce("START", (a, b) -> a + ", " + b));
     }
 
     @Test
     public void testCollectors_joining() {
         System.out.println(testUtil.generateStreamOfBooks()
-                .map(Book::getName).collect(Collectors.joining("><")));
+           .map(Book::getName).collect(Collectors.joining("><")));
     }
 
     @Test
@@ -177,7 +177,7 @@ class HelloStreamApiTest {
 
         // Alternatively you can use Stream.distinct()
         System.out.println("Using distinct(): " + Stream.concat(group1.stream(), group2.stream()).distinct()
-                .collect(Collectors.toList()));
+                .collect(toList()));
     }
 
     @Test
@@ -200,7 +200,7 @@ class HelloStreamApiTest {
         List<Employee> employeeList = testUtil.generateEmployeeList();
         Map<String, List<Double>> map = employeeList.stream()
                 .collect(Collectors.groupingBy(Employee::getTitle,
-                        Collectors.mapping(Employee::getSalary, Collectors.toList())));
+                        Collectors.mapping(Employee::getSalary, toList())));
         System.out.println(map);
     }
 
@@ -211,7 +211,7 @@ class HelloStreamApiTest {
         Stream s1 = Stream.of("AU_wsoEnabled", "AU_theme", "AU_timeout");
         Stream s2 = Stream.of("AU_memory", "AU_cpu", "AU_threads");
         Stream s3 = isAuProfile ? Stream.concat(s1, s2) : Stream.empty();
-        System.out.println(s3.collect(Collectors.toList()));
+        System.out.println(s3.collect(toList()));
     }
 
     @Test
@@ -232,7 +232,7 @@ class HelloStreamApiTest {
 
         //begin sample code
         List<String> cols = IntStream.range(1, metaData.getColumnCount() + 1).boxed()
-                .map(testUtil.unchecked(metaData::getColumnName)).collect(Collectors.toList());
+                .map(testUtil.unchecked(metaData::getColumnName)).collect(toList());
         System.out.println(cols);
     }
 
@@ -241,7 +241,7 @@ class HelloStreamApiTest {
         //prepare
         List<Integer> nums = Arrays.asList(1,2,3,4,5,6,7);
         //begin sample code
-        List<Integer> oddNums = nums.stream().filter((n) -> n % 2 > 0).collect(Collectors.toList());
+        List<Integer> oddNums = nums.stream().filter((n) -> n % 2 > 0).collect(toList());
 
         System.out.println(oddNums);
     }
