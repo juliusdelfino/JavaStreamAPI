@@ -17,9 +17,9 @@ public class TestUtil {
         List<String> names = Arrays.asList(
                 "Liam","Noah","Oliver","Elijah","James","William","Benjamin","Lucas","Henry","Theodore");
         List<Integer> ages = Arrays.asList(34,22,63,21,12,16,37,25,28,15);
-        List<String> names1 = Arrays.asList(
-                "Liam","Noah","Oliver","Elijah","James","William","Benjamin","Lucas","Henry","Theodore");
-        List<Integer> ages = Arrays.asList(34,22,63,21,12,16,37,25,28,15);
+        String username = "admin";
+        String password = "admin";
+                    String hashVal = username + password;
         return IntStream.range(0, names.size())
                 .mapToObj(i -> new Person(ages.get(i), names.get(i)))
                 .collect(Collectors.toList());
